@@ -12,7 +12,7 @@ resource "aws_route_table" "rtb" {
 }
 
 resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.public[count.index].subnet_id
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.rtb.id
   count          = 2
 }
@@ -22,7 +22,7 @@ resource "aws_route_table_association" "a" {
 resource "aws_default_route_table" "dflrtb" {
   default_route_table_id = aws_vpc.main.default_route_table_id
 
-  route = {
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.natgw.id
   }

@@ -11,7 +11,7 @@ resource "aws_security_group" "allow_tls" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress = {
+  ingress {
     description = "TLS from VPC"
     from_port   = 80
     to_port     = 80
@@ -19,7 +19,7 @@ resource "aws_security_group" "allow_tls" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress = {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -32,6 +32,10 @@ resource "aws_security_group" "allow_tls" {
 }
 
 resource "aws_security_group" "allow_tls_db" {
+  name        = "allow_tls_db"
+  vpc_id      = aws_vpc.main.id
+  description = "Allow TLS inbound traffic"
+
   ingress {
     description = "TLS from VPC"
     from_port   = 22
@@ -40,7 +44,7 @@ resource "aws_security_group" "allow_tls_db" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress = {
+  ingress {
     description = "TLS from VPC"
     from_port   = 3306
     to_port     = 3306
@@ -48,7 +52,7 @@ resource "aws_security_group" "allow_tls_db" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress = {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"

@@ -14,11 +14,22 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.3.0/24"
-  availability_zone = "us-east-1"
-  count             = 2
+  availability_zone = "us-east-1a"
+
 
   tags = {
     Name = "private-sub3"
   }
 
+}
+
+data "aws_subnets" "sid" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_vpc.main.id]
+  }
+
+  tags = {
+    Tier = "Public"
+  }
 }
