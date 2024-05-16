@@ -5,6 +5,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = [aws_security_group.allow_tls.id]
   associate_public_ip_address = true
   count                       = 2
+  user_data                   = file("web_server.sh")
 
   tags = {
     Name = "WebServer"

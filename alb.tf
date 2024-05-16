@@ -3,7 +3,7 @@ resource "aws_lb" "alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_tls.id]
-  subnets            = [for subnets in aws_subnet.public : subnet.id]
+  subnets            = [for subnet in aws_subnet.public : subnet.id]
 
   enable_deletion_protection = false
 
@@ -29,6 +29,13 @@ resource "aws_lb_target_group" "albtg" {
     path                = "/"
     port                = 80
   }
+}
+
+resource "aws_lb_target_group_attachment" "front_end" {
+  target_group_arn = aws_lb_target_group.albtg.arn
+  target_id        = aws_instance.web[count.index].target_id
+  port             = 80
+  count            = 2
 }
 
 //Listener
